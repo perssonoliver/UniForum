@@ -1,7 +1,6 @@
 import './CoursePage.css'
 import StarRating from './components/StarRating'
 import like from './img/like.png'
-import dislike from './img/thumbs_down.png'
 
 function CourseHeader() {
   const averageRating = 4.3
