@@ -79,7 +79,7 @@
 
 .course-body-container {
   display: flex;
-  gap: 20px;
+  gap: 80px;
   font-size: 0.8em;
   border: 0px solid red;
   flex: 1;
@@ -88,6 +88,7 @@
 
 .course-body-container > * {
   width: 50%;
+  box-sizing: border-box;
 }
 
 .course-body-reviews-container {
