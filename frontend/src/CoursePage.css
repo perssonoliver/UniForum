@@ -7,7 +7,6 @@
   gap: 5px;
   font-size: 1.1em;
   padding: 50px 80px;
-  border: 1px solid green;
   box-sizing: border-box;
 }
 
@@ -73,6 +72,7 @@
   border-radius: 10px;
   border: 1px solid #002fff;
   font-size: 0.9em;
+  cursor: pointer;
 }
 
 /***********************************************************************/
@@ -149,11 +149,6 @@
 }
 
 .course-review-footer {
-  display: flex;
-  gap: 10px;
-}
-
-.course-review-like-field {
   display: flex;
   align-items: center;
   gap: 5px;

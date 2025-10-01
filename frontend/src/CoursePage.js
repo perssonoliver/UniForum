@@ -79,18 +79,16 @@ function CourseReview({ rating, author, title, likesCount, dislikesCount }) {
         ut labore et dolore magna aliqua.`}
       </p>
       <div className='course-review-footer'>
-        <div className='course-review-like-field'>
-          <button className='course-review-like-button'>
-            <img className='like-icon' src={like} alt='Like' />
-          </button>
-          <span className='course-review-like-count'>{likesCount}</span>
-        </div>
-        {/*<div className='course-review-like-field'>
+        <button className='course-review-like-button'>
+          <img className='like-icon' src={like} alt='Like' />
+        </button>
+        <span className='course-review-like-count'>{likesCount}</span>
+        {/*
           <button className='course-review-like-button'>
             <img className='like-icon' src={dislike} alt='Dislike' />
           </button>
           <span className='course-review-like-count'>{dislikesCount}</span>
-        </div>*/}
+        */}
       </div>
     </li>
   )
