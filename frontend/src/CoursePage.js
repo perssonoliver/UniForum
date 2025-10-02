@@ -1,11 +1,12 @@
 import './CoursePage.css'
+import CourseReview from './CourseReview'
+import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
-import likeIcon from './img/like.png'
-import commentIcon from './img/comment.png'
 
 function CourseHeader() {
   const averageRating = 4.3
   const reviewCount = 7
+  
   return (
     <div className='course-header-container'>
       <span className='course-header-title'>Flertrådad programmering</span>
@@ -75,64 +76,6 @@ function CourseBody() {
         </div>
       </div>
     </div>
-  )
-}
-
-function CourseReview({ rating, author, title, likesCount }) {
-  return (
-    <li className='course-review-card'>
-      <div className='course-review-rating'>
-        <StarRating rating={rating} />
-        <span className='course-review-author'>{author}</span>
-      </div>
-      <h3 className='course-review-title'>{title}</h3>
-      <p className='course-review-text'>{`Lorem ipsum dolor sit amet, 
-        consectetur adipiscing elit. Sed do eiusmod tempor incididunt 
-        ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-        commodo consequat. Duis aute irure dolor in reprehenderit in 
-        voluptate velit esse cillum dolore eu fugiat nulla pariatur.`}
-      </p>
-      <div className='course-review-footer'>
-        <button className='course-review-like-button'>
-          <img className='like-icon' src={likeIcon} alt='Like' />
-        </button>
-        <span>{likesCount}</span>
-      </div>
-    </li>
-  )
-}
-
-function CourseDiscussion({ title, author, date, likesCount, commentsCount }) {
-  return (
-    <li className='course-discussion-card'>
-      <button className='course-discussion-profile'>{author}</button>
-      <div className='course-discussion-main'>
-        <h3 className='course-discussion-title'>{title}</h3>
-        <p className='course-discussion-text'>{`Lorem ipsum dolor sit amet, 
-          consectetur adipiscing elit. Sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-          commodo consequat. Duis aute irure dolor in reprehenderit in 
-          voluptate velit esse cillum dolore eu fugiat nulla pariatur.`}
-        </p>
-        <div className='course-discussion-footer'>
-          <div className='course-discussion-like-field'>
-            <button className='course-discussion-like-button'>
-              <img className='like-icon' src={likeIcon} alt='Like' />
-            </button>
-            <span>{likesCount}</span>
-          </div>
-          <div className='course-discussion-comment-field'>
-            <button className='course-discussion-comment-button'>
-              <img className='like-icon' src={commentIcon} alt='Comment' />
-            </button>
-            <span>{commentsCount}</span>
-          </div>
-          <span className='course-discussion-date'>{date}</span>
-        </div>
-      </div>
-    </li>
   )
 }
 

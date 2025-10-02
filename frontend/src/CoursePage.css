@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 5px;
   font-size: 1.1em;
-  padding: 50px 80px;
+  padding: 50px 120px;
   box-sizing: border-box;
 }
 
@@ -79,7 +79,7 @@
 
 .course-body-container {
   display: flex;
-  gap: 80px;
+  gap: 120px;
   font-size: 0.8em;
   border: 0px solid red;
   flex: 1;
