@@ -5,7 +5,7 @@ using CourseService.Data;
 using System;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWebApplication()  // Changed from ConfigureFunctionsWorkerDefaults
     .ConfigureServices((context, services) =>
     {
         var connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
