@@ -4,10 +4,14 @@ import { useState } from 'react'
 function SearchPage() {
   const [searchQuery, setSearchQuery] = useState('')
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault()
     // Add your search logic here
     console.log('Searching for:', searchQuery)
+    const response = await fetch("http://localhost:7071/api/courses");
+    //const response = await fetch("https://unihelpercourseservice.azurewebsites.net/api/courses");
+    const data = await response.json();
+    console.log(data); 
   }
 
   return (

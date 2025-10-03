@@ -10,7 +10,7 @@
 Create Azure SQL database
 Copy the connection string 
 
-- func init backend --dotnet (create Functions project)
+- func init <service name> --worker-runtime dotnet-isolated --target-framework net8.0 (create Functions project)
 - func new --name <function name> --template "HTTP trigger" --authlevel "anonymous" (create a new function)
 
 Add the SqlConnectionString to local.settings.json
