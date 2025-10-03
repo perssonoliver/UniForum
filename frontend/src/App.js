@@ -1,9 +1,10 @@
 import './App.css'
-import CoursePage from './CoursePage'
+//import CoursePage from './CoursePage'
+import SearchPage from './SearchPage'
 
 function App() {
   return (
-    <CoursePage />
+    <SearchPage />
   )
 }
 
