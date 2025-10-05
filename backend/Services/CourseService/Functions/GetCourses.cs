@@ -19,7 +19,7 @@ namespace CourseService.Functions
         [Function("GetCourses")]
         public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "courses")] HttpRequestData req)
         {
-            var courses = _context.Courses.ToList();
+            var courses = await _context.Courses.ToListAsync();
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
             await response.WriteAsJsonAsync(courses);
