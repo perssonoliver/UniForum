@@ -2,7 +2,7 @@ import './CoursePage.css'
 import StarRating from './components/StarRating'
 import likeIcon from './img/like.png'
 
-function CourseReview({ rating, author, title, likesCount }) {
+function CourseReview({ rating, author, date, title, likesCount }) {
   return (
     <li className='course-review-card'>
       <div className='course-review-rating'>
@@ -22,6 +22,7 @@ function CourseReview({ rating, author, title, likesCount }) {
           <img className='like-icon' src={likeIcon} alt='Like' />
         </button>
         <span>{likesCount}</span>
+        <span className='course-review-date'>{date}</span>
       </div>
     </li>
   )

@@ -7,6 +7,10 @@ const SuggestionsDropdown = ({
 }) => {
   if (!isVisible) return null
 
+  const formatCourseForDisplay = (course) => {
+    return `${course.Name} (${course.Code})`
+  }
+
   return (
     <div className='suggestions-container'>
       {isLoading ? (
@@ -14,11 +18,11 @@ const SuggestionsDropdown = ({
       ) : suggestions.length > 0 ? (
         suggestions.map((course, index) => (
           <div
-            key={index}
+            key={course.Code || index}
             className='suggestion-item'
             onClick={() => onSelectSuggestion(course)}
           >
-            {course}
+            {formatCourseForDisplay(course)}
           </div>
         ))
       ) : searchQuery && (

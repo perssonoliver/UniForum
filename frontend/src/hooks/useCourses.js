@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import config from '../config'
 
-const formatData = (data) => {
-  return data.map(course => `${course.Name} (${course.Code})`).sort()
-}
-
 const CACHE_KEY = 'unihelper_courses_cache'
 const CACHE_TTL = 30 * 60 * 1000 // 30 minutes
 
@@ -76,10 +72,11 @@ export const useCourses = () => {
       }
       
       const data = await response.json()
-      const formattedData = formatData(data)
+      // Sort courses by Name
+      const sortedData = data.sort((a, b) => a.Name.localeCompare(b.Name))
       
-      cacheManager.set(formattedData)
-      setCourses(formattedData)
+      cacheManager.set(sortedData)
+      setCourses(sortedData)
     } catch (error) {
       console.error('Error fetching courses:', error)
       setError(error.message)
