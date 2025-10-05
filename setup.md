@@ -27,3 +27,9 @@ Run locally:
 - dotnet clean
 - dotnet build
 - func start
+
+# Deploy Functions app: 
+
+Create a functions app
+
+- func azure functionapp publish <Function app name> (deploy, from correct directory)
