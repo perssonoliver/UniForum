@@ -1,17 +1,55 @@
 import './SearchPage.css'
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
+import { useCourses } from './hooks/useCourses'
+import SuggestionsDropdown from './components/SuggestionsDropdown'
 
 function SearchPage() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  
+  const { courses, isLoading, error } = useCourses()
 
-  const handleSearch = async (e) => {
+  const filteredCourses = useMemo(() => {
+    if (!searchQuery.trim()) return courses
+    return courses.filter(course => 
+      course.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }, [courses, searchQuery])
+
+  const handleSearch = useCallback((e) => {
     e.preventDefault()
-    // Add your search logic here
+    if (!searchQuery.trim()) return
+    
     console.log('Searching for:', searchQuery)
-    const response = await fetch("http://localhost:7071/api/courses");
-    //const response = await fetch("https://unihelpercourseservice.azurewebsites.net/api/courses");
-    const data = await response.json();
-    console.log(data); 
+    setShowSuggestions(false)
+    // Add your search logic here
+  }, [searchQuery])
+
+  const handleInputChange = useCallback((e) => {
+    setSearchQuery(e.target.value)
+  }, [])
+
+  const handleFocus = useCallback(() => {
+    setShowSuggestions(true)
+  }, [])
+
+  const handleBlur = useCallback(() => {
+    setTimeout(() => setShowSuggestions(false), 200)
+  }, [])
+
+  const handleSelectSuggestion = useCallback((suggestion) => {
+    setSearchQuery(suggestion)
+    setShowSuggestions(false)
+  }, [])
+
+  if (error) {
+    return (
+      <div className='search-page-container'>
+        <div className='error-message'>
+          Error loading courses: {error}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -26,15 +64,31 @@ function SearchPage() {
               className='search-input'
               placeholder='Search for courses...'
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onChange={handleInputChange}
+              aria-label='Search for courses'
             />
-            <button type='submit' className='search-button'>
+            <button 
+              type='submit' 
+              className='search-button'
+              aria-label='Search'
+              disabled={!searchQuery.trim()}
+            >
               <svg className='search-icon' viewBox='0 0 24 24' fill='none' stroke='currentColor'>
                 <circle cx='11' cy='11' r='8'></circle>
                 <path d='m21 21-4.35-4.35'></path>
               </svg>
             </button>
           </div>
+          
+          <SuggestionsDropdown
+            suggestions={filteredCourses}
+            isLoading={isLoading}
+            searchQuery={searchQuery}
+            onSelectSuggestion={handleSelectSuggestion}
+            isVisible={showSuggestions}
+          />
         </form>
       </div>
     </div>
