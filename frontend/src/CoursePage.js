@@ -1,5 +1,5 @@
 import './CoursePage.css'
-import { useParams, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
@@ -38,19 +38,24 @@ function CourseBody() {
         <div className='course-reviews-list-container'>
           <ul className='course-reviews-list'>
             <CourseReview 
-              rating={5} author="Oliver P." title="Great course!" likesCount={10}
+              rating={5} author="Oliver P." date="2025-08-26"
+              title="Great course!" likesCount={10}
             />
             <CourseReview 
-              rating={4} author="Anonymous" title="Very informative" likesCount={5}
+              rating={4} author="Anonymous" date="2024-11-12"
+              title="Very informative" likesCount={5}
             />
             <CourseReview 
-              rating={5} author="Jonathan S." title="Loved it!" likesCount={8}
+              rating={5} author="Jonathan S." date="2024-11-05"
+              title="Loved it!" likesCount={8}
             />
             <CourseReview 
-              rating={4} author="Anonymous" title="Well structured" likesCount={6}
+              rating={4} author="Anonymous" date="2024-11-02"
+              title="Well structured" likesCount={6}
             />
             <CourseReview 
-              rating={3} author="Anonymous" title="Could be better" likesCount={3}
+              rating={3} author="Anonymous" date="2024-10-27"
+              title="Could be better" likesCount={3}
             />
           </ul>
         </div>

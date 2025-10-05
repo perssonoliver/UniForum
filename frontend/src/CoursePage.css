@@ -182,6 +182,11 @@
   height: 100%;
 }
 
+.course-review-date {
+  flex-grow: 1;
+  text-align: right;
+}
+
 /***********************************************************************/
 
 .course-body-discussions-container {
