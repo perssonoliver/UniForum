@@ -1,11 +1,19 @@
 import './App.css'
-//import CoursePage from './CoursePage'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SearchPage from './SearchPage'
+import CoursePage from './CoursePage'
 
 function App() {
   return (
-    <SearchPage />
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<SearchPage />} />
+          <Route path="/course/:courseCode" element={<CoursePage />} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
-export default App;
+export default App

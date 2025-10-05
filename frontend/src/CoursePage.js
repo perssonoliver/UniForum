@@ -1,16 +1,19 @@
 import './CoursePage.css'
+import { useParams, useLocation } from 'react-router-dom'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
 
-function CourseHeader() {
+function CourseHeader({ courseData }) {
   const averageRating = 4.3
   const reviewCount = 7
   
   return (
     <div className='course-header-container'>
-      <span className='course-header-title'>Flertrådad programmering</span>
-      <span className='course-header-subtitle'>EDAP10 (A, 7.5 hp)</span>
+      <span className='course-header-title'>{courseData?.Name || 'Course Name'}</span>
+      <span className='course-header-subtitle'>
+        {courseData?.Code} ({courseData?.Level}, {courseData?.Credits} hp)
+      </span>
       <div className='course-header-reviews'>
         <div className='course-header-rating'>
           <StarRating rating={averageRating} />
@@ -80,9 +83,12 @@ function CourseBody() {
 }
 
 function CoursePage() {
+  const location = useLocation()
+  const courseData = location.state?.courseData
+  
   return (
     <div className='course-container'>
-      <CourseHeader />
+      <CourseHeader courseData={courseData} />
       <CourseBody />
     </div>
   )
