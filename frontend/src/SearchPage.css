@@ -5,6 +5,7 @@
   justify-content: center;
   padding: 20px;
   box-sizing: border-box;
+  background-color: hsl(0, 0%, 94%);
 }
 
 .search-content {
@@ -30,7 +31,7 @@
   position: relative;
   display: flex;
   align-items: stretch;
-  background: white;
+  background-color: hsl(0, 0%, 98%);
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -78,7 +79,7 @@
 }
 
 .search-button:hover:not(:disabled) {
-  background: #5a67d8;
+  background: hsl(234, 62%, 60%);
 }
 
 .search-button:disabled {
@@ -99,7 +100,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
+  background-color: hsl(0, 0%, 98%);
   border-radius: 0 0 12px 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   max-height: 300px;
@@ -118,7 +119,7 @@
 }
 
 .suggestion-item:hover {
-  background-color: #f8f9ff;
+  background: hsl(234, 62%, 92%);
 }
 
 .suggestion-item:last-child {

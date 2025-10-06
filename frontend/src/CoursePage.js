@@ -7,6 +7,7 @@ import StarRating from './components/StarRating'
 import './CoursePage.css'
 
 function formatUserName(name) {
+  if (!name) return null // Implement loading of reviews and then remove this line
   const parts = name.split(' ')
   return parts[0] + ' ' + parts[1][0] + '.'
 }
