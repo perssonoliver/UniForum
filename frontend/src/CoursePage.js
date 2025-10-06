@@ -6,40 +6,12 @@ import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
 import './CoursePage.css'
 
-function CourseHeader({ courseData }) {
-  const [averageRating, setAverageRating] = useState(0)
-  const [reviewCount, setReviewCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
+function formatUserName(name) {
+  const parts = name.split(' ')
+  return parts[0] + ' ' + parts[1][0] + '.'
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!courseData?.Id) return;
-      
-      setIsLoading(true)
-      
-      try {
-        const response = await fetch(`${config.API_REVIEW_SERVICE_BASE_URL}/api/courses/${courseData.Id}/reviews`)
-
-        if (!response.ok) {
-          console.log(`Failed to fetch reviews for course ${courseData.Id}`)
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        
-        const data = await response.json()
-        setAverageRating(() => {
-          if (data.length === 0) return 0
-          const total = data.reduce((sum, review) => sum + review.Rating, 0)
-          return total / data.length
-        })
-        setReviewCount(data.length)
-      } catch (error) {
-        console.error('Error fetching reviews:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    };
-    fetchData()
-  }, [courseData?.Id])
+function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
   
   return (
     <div className='course-header-container'>
@@ -71,33 +43,26 @@ function CourseHeader({ courseData }) {
   )
 }
 
-function CourseBody() {
+function CourseBody( { reviewData, usersData, isLoading } ) {
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
         <h1>Reviews</h1>
         <div className='course-reviews-list-container'>
           <ul className='course-reviews-list'>
-            <CourseReview 
-              rating={5} author="Oliver P." date="2025-08-26"
-              title="Great course!" likesCount={10}
-            />
-            <CourseReview 
-              rating={4} author="Anonymous" date="2024-11-12"
-              title="Very informative" likesCount={5}
-            />
-            <CourseReview 
-              rating={5} author="Jonathan S." date="2024-11-05"
-              title="Loved it!" likesCount={8}
-            />
-            <CourseReview 
-              rating={4} author="Anonymous" date="2024-11-02"
-              title="Well structured" likesCount={6}
-            />
-            <CourseReview 
-              rating={3} author="Anonymous" date="2024-10-27"
-              title="Could be better" likesCount={3}
-            />
+            {reviewData
+              .filter(review => review.Title && review.Content)
+              .map((review, index) => (
+                <CourseReview 
+                  key={review.Id || index}
+                  rating={review.Rating} 
+                  author={review.IsAnonymous ? "Anonymous" : (formatUserName(usersData[review.UserId]) || "Unknown User")}
+                  date={review.CreatedAt.split('T')[0]}
+                  title={review.Title} 
+                  content={review.Content} 
+                  likesCount={review.LikesCount || 0}
+                />
+              ))}
           </ul>
         </div>
       </div>
@@ -129,13 +94,89 @@ function CourseBody() {
 }
 
 function CoursePage() {
+  const [reviewData, setReviewData] = useState([])
+  const [usersData, setUsersData] = useState({})
+  const [averageRating, setAverageRating] = useState(0)
+  const [reviewCount, setReviewCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
   const location = useLocation()
   const courseData = location.state?.courseData
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!courseData?.Id) return;
+      
+      setIsLoading(true)
+      
+      try {
+        const reviewResponse = await fetch(`${config.API_REVIEW_SERVICE_BASE_URL}/api/courses/${courseData.Id}/reviews`)
+
+        if (!reviewResponse.ok) {
+          console.log(`Failed to fetch reviews for course ${courseData.Id}`)
+          throw new Error(`HTTP error! status: ${reviewResponse.status}`)
+        }
+        
+        const reviews = await reviewResponse.json()
+        setReviewData(reviews)
+        
+        const userIds = [...new Set(
+          reviews
+            .filter(review => !review.IsAnonymous)
+            .map(review => review.UserId)
+        )]
+        
+        if (userIds.length > 0) {
+          const userPromises = userIds.map(async (userId) => {
+            try {
+              const userResponse = await fetch(`${config.API_USER_SERVICE_BASE_URL}/api/users/${userId}`)
+              if (userResponse.ok) {
+                return await userResponse.json()
+              } else {
+                console.warn(`Failed to fetch user ${userId}`)
+                return { Id: userId, Name: "Unknown User" }
+              }
+            } catch (error) {
+              console.warn(`Error fetching user ${userId}:`, error)
+              return { Id: userId, Name: "Unknown User" }
+            }
+          })
+          
+          const users = await Promise.all(userPromises)
+          
+          const userLookup = users.reduce((acc, user) => {
+            acc[user.Id] = user.Name
+            return acc
+          }, {})
+          
+          setUsersData(userLookup)
+        }
+        
+        setAverageRating(() => {
+          if (reviews.length === 0) return 0
+          const total = reviews.reduce((sum, review) => sum + review.Rating, 0)
+          return total / reviews.length
+        })
+        setReviewCount(reviews.length)
+        
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    fetchData()
+  }, [courseData?.Id])
   
   return (
     <div className='course-container'>
-      <CourseHeader courseData={courseData} />
-      <CourseBody />
+      <CourseHeader 
+        courseData={courseData} averageRating={averageRating} 
+        reviewCount={reviewCount} isLoading={isLoading}
+      />
+      <CourseBody 
+        reviewData={reviewData} usersData={usersData} isLoading={isLoading}
+      />
     </div>
   )
 }
