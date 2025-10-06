@@ -15,11 +15,10 @@ namespace ReviewService.Data
             {
                 entity.HasKey(r => r.Id);
 
-                entity.Property(r => r.CourseCode)
-                    .IsRequired()
-                    .HasMaxLength(10);
+                entity.Property(r => r.CourseId)
+                    .IsRequired();
 
-                entity.Property(r => r.StudentId)
+                entity.Property(r => r.UserId)
                     .IsRequired();
                 
                 entity.Property(r => r.Rating)

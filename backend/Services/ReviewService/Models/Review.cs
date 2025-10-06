@@ -6,8 +6,8 @@ namespace ReviewService.Models
     public class Review
     {
         public int Id { get; set; }
-        public required string CourseCode { get; set; }
-        public required int StudentId { get; set; }
+        public required int CourseId { get; set; }
+        public required int UserId { get; set; }
         public bool IsAnonymous { get; set; } = false;
         public double Rating { get; set; }
         public string? Title { get; set; }
