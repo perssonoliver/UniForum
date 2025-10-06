@@ -8,6 +8,7 @@
   font-size: 1.1em;
   padding: 50px 120px;
   box-sizing: border-box;
+  text-align: left;
 }
 
 .course-header-container {
@@ -84,7 +85,6 @@
   border: 0px solid red;
   flex: 1;
   min-height: 0;
-  text-align: left;
 }
 
 .course-body-container > * {
