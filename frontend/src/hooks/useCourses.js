@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import config from '../config'
 
 const CACHE_KEY = 'unihelper_courses_cache'
-const CACHE_TTL = 30 * 60 * 1000 // 30 minutes
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
 const cacheManager = {
   get() {
@@ -65,7 +65,7 @@ export const useCourses = () => {
       console.log('Fetching courses from API')
       setIsLoading(true)
       setError(null)
-      const response = await fetch(`${config.API_BASE_URL}/api/courses`)
+      const response = await fetch(`${config.API_COURSE_SERVICE_BASE_URL}/api/courses`)
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)

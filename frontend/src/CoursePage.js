@@ -1,12 +1,45 @@
-import './CoursePage.css'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import config from './config'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
+import './CoursePage.css'
 
 function CourseHeader({ courseData }) {
-  const averageRating = 4.3
-  const reviewCount = 7
+  const [averageRating, setAverageRating] = useState(0)
+  const [reviewCount, setReviewCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!courseData?.Id) return;
+      
+      setIsLoading(true)
+      
+      try {
+        const response = await fetch(`${config.API_REVIEW_SERVICE_BASE_URL}/api/courses/${courseData.Id}/reviews`)
+
+        if (!response.ok) {
+          console.log(`Failed to fetch reviews for course ${courseData.Id}`)
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        setAverageRating(() => {
+          if (data.length === 0) return 0
+          const total = data.reduce((sum, review) => sum + review.Rating, 0)
+          return total / data.length
+        })
+        setReviewCount(data.length)
+      } catch (error) {
+        console.error('Error fetching reviews:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    };
+    fetchData()
+  }, [courseData?.Id])
   
   return (
     <div className='course-header-container'>
@@ -17,8 +50,16 @@ function CourseHeader({ courseData }) {
       <div className='course-header-reviews'>
         <div className='course-header-rating'>
           <StarRating rating={averageRating} />
-          <span className='course-header-rating-value'>{averageRating.toFixed(1)}</span>
-          <span className='course-header-review-count'>{reviewCount} reviews</span>
+          {isLoading ? (
+            <>
+              <span className='course-header-review-count'>Loading reviews...</span>
+            </>
+          ) : (
+            <>
+              <span className='course-header-rating-value'>{averageRating.toFixed(1)}</span>
+              <span className='course-header-review-count'>{reviewCount} reviews</span>
+            </>
+          )}
         </div>
       </div>
       <div className='course-header-tags'>

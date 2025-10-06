@@ -34,5 +34,7 @@ Run locally:
 # Deploy Functions app: 
 
 Create a functions app
-
 - func azure functionapp publish <Function app name> (deploy, from correct directory)
+
+Allow addresses on CORS (Azure portal)
+Set sql connection string (Azure portal)
