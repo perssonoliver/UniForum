@@ -11,6 +11,11 @@ namespace ReviewService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Review>()
+                .HasIndex(r => new { r.CourseId, r.UserId })
+                .IsUnique()
+                .HasDatabaseName("IX_Review_CourseId_UserId_Unique");
+            
             modelBuilder.Entity<Review>(entity =>
             {
                 entity.HasKey(r => r.Id);
