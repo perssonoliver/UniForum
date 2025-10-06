@@ -12,7 +12,7 @@ using ReviewService.Data;
 namespace ReviewService.Migrations
 {
     [DbContext(typeof(ReviewDbContext))]
-    [Migration("20251005183252_InitialCreate")]
+    [Migration("20251006124820_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -37,10 +37,8 @@ namespace ReviewService.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -60,14 +58,12 @@ namespace ReviewService.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("StudentName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Title")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

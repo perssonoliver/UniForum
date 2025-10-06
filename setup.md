@@ -23,6 +23,9 @@ After creating models and contexts, run:
 - dotnet ef migrations add InitialCreate
 - dotnet ef database update
 
+To remove migrations: 
+- rmdir /s Migrations
+
 Run locally: 
 - dotnet clean
 - dotnet build
