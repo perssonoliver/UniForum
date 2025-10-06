@@ -6,6 +6,11 @@ import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
 import './CoursePage.css'
 
+function formatUserName(name) {
+  const parts = name.split(' ')
+  return parts[0] + ' ' + parts[1][0] + '.'
+}
+
 function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
   
   return (
@@ -51,7 +56,7 @@ function CourseBody( { reviewData, usersData, isLoading } ) {
                 <CourseReview 
                   key={review.Id || index}
                   rating={review.Rating} 
-                  author={review.IsAnonymous ? "Anonymous" : (usersData[review.UserId] || "Unknown User")}
+                  author={review.IsAnonymous ? "Anonymous" : (formatUserName(usersData[review.UserId]) || "Unknown User")}
                   date={review.CreatedAt.split('T')[0]}
                   title={review.Title} 
                   content={review.Content} 

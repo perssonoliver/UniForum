@@ -44,13 +44,13 @@
 .course-header-rating-value {
   margin-left: 5px;
   font-weight: bold;
-  align-self: last baseline;
+  align-self: center;
 }
 
 .course-header-review-count {
   margin-left: 15px;
   color: gray;
-  align-self: last baseline;
+  align-self: center;
 }
 
 .course-header-tags {
@@ -122,6 +122,7 @@
 .course-review-card {
   margin: 0 15px;
   padding: 20px 0;
+  text-align: left;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -142,6 +143,7 @@
 .course-review-author {
   font-size: 0.9em;
   color: rgb(56, 56, 56);
+  align-self: center;
 }
 
 .course-review-title {
@@ -204,6 +206,7 @@
   border-radius: 10px;
   border: 1px solid #e4e4e4;
   overflow-y: auto;
+  text-align: left;
   flex: 1;
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
