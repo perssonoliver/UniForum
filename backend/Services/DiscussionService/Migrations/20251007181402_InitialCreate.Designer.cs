@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiscussionService.Migrations
 {
     [DbContext(typeof(DiscussionDbContext))]
-    [Migration("20251007174311_UpdateModel")]
-    partial class UpdateModel
+    [Migration("20251007181402_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
