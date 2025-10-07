@@ -12,6 +12,10 @@ const config = {
     "https://unihelperreviewservice.azurewebsites.net" ||
     "http://localhost:7071",
 
+  API_DISCUSSION_SERVICE_BASE_URL: 
+    "https://unihelperdiscussionservice.azurewebsites.net" ||
+    "http://localhost:7071",
+
   API_USER_SERVICE_BASE_URL: 
     "https://unihelperuserservice.azurewebsites.net" ||
     "http://localhost:7071"

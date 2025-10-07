@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiscussionService.Migrations
 {
     [DbContext(typeof(DiscussionDbContext))]
-    [Migration("20251006233525_InitialCreate")]
+    [Migration("20251007181402_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -61,9 +61,8 @@ namespace DiscussionService.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
