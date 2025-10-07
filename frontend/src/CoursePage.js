@@ -6,10 +6,16 @@ import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
 import './CoursePage.css'
 
-function formatUserName(name) {
+function formatReviewUserName(name) {
   if (!name) return null // Implement loading of reviews and then remove this line
   const parts = name.split(' ')
   return parts[0] + ' ' + parts[1][0] + '.'
+}
+
+function formatDiscussionUserName(name) {
+  if (!name) return null // Implement loading of discussions and then remove this line
+  const parts = name.split(' ')
+  return parts[0][0] + parts[1][0]
 }
 
 function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
@@ -44,7 +50,7 @@ function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
   )
 }
 
-function CourseBody( { reviewData, usersData, isLoading } ) {
+function CourseBody( { reviewData, discussionData, usersData, isLoading } ) {
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
@@ -57,7 +63,7 @@ function CourseBody( { reviewData, usersData, isLoading } ) {
                 <CourseReview 
                   key={review.Id || index}
                   rating={review.Rating} 
-                  author={review.IsAnonymous ? "Anonymous" : (formatUserName(usersData[review.UserId]) || "Unknown User")}
+                  author={review.IsAnonymous ? "Anonymous" : (formatReviewUserName(usersData[review.UserId]) || "Unknown User")}
                   date={review.CreatedAt.split('T')[0]}
                   title={review.Title} 
                   content={review.Content} 
@@ -71,22 +77,17 @@ function CourseBody( { reviewData, usersData, isLoading } ) {
         <h1>Discussions</h1>
         <div className='course-discussions-list-container'>
           <ul className='course-discussions-list'>
-            <CourseDiscussion 
-              title="How are the labs set up?" author="EA" 
-              date="2025-09-06" likesCount={5} commentsCount={2}
-            />
-            <CourseDiscussion 
-              title="Is the exam difficult?" author="RS" 
-              date="2025-09-05" likesCount={2} commentsCount={1}
-            />
-            <CourseDiscussion 
-              title="Do I need to know Java well?" author="JE" 
-              date="2025-09-02" likesCount={3} commentsCount={1}
-            />
-            <CourseDiscussion 
-              title="Is it a heavy course?" author="FH" 
-              date="2025-09-02" likesCount={6} commentsCount={3}
-            />
+            {discussionData.map((discussion, index) => (
+              <CourseDiscussion
+                key={discussion.Id || index}
+                title={discussion.Title}
+                content={discussion.Content}
+                author={formatDiscussionUserName(usersData[discussion.UserId]) || "JD"}
+                date={discussion.CreatedAt.split('T')[0]}
+                likesCount={discussion.LikesCount || 0}
+                commentsCount={discussion.CommentsCount || 0}
+              />
+            ))}
           </ul>
         </div>
       </div>
@@ -96,6 +97,7 @@ function CourseBody( { reviewData, usersData, isLoading } ) {
 
 function CoursePage() {
   const [reviewData, setReviewData] = useState([])
+  const [discussionData, setDiscussionData] = useState([])
   const [usersData, setUsersData] = useState({})
   const [averageRating, setAverageRating] = useState(0)
   const [reviewCount, setReviewCount] = useState(0)
@@ -119,12 +121,26 @@ function CoursePage() {
         
         const reviews = await reviewResponse.json()
         setReviewData(reviews)
-        
-        const userIds = [...new Set(
-          reviews
-            .filter(review => !review.IsAnonymous)
-            .map(review => review.UserId)
-        )]
+
+        const discussionResponse = await fetch(`${config.API_DISCUSSION_SERVICE_BASE_URL}/api/courses/${courseData.Id}/discussions`)
+
+        if (!discussionResponse.ok) {
+          console.log(`Failed to fetch discussions for course ${courseData.Id}`)
+          throw new Error(`HTTP error! status: ${discussionResponse.status}`)
+        }
+
+        const discussions = await discussionResponse.json()
+        setDiscussionData(discussions)
+
+        const reviewUserIds = reviews
+          .filter(review => !review.IsAnonymous)
+          .map(review => review.UserId);
+          
+        const discussionUserIds = discussions
+          .map(discussion => discussion.UserId);
+          
+        const userIds = [...new Set([...reviewUserIds, ...discussionUserIds])]
+          .filter(id => id);
         
         if (userIds.length > 0) {
           const userPromises = userIds.map(async (userId) => {
@@ -176,7 +192,8 @@ function CoursePage() {
         reviewCount={reviewCount} isLoading={isLoading}
       />
       <CourseBody 
-        reviewData={reviewData} usersData={usersData} isLoading={isLoading}
+        reviewData={reviewData} discussionData={discussionData}
+        usersData={usersData} isLoading={isLoading}
       />
     </div>
   )
