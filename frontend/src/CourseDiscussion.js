@@ -3,17 +3,10 @@ import './CoursePage.css'
 import likeIcon from './img/like.png'
 import commentIcon from './img/comment.png'
 
-function CourseDiscussion({ title, author, date, likesCount, commentsCount }) {
+function CourseDiscussion({ title, content, author, date, likesCount, commentsCount }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isClampable, setIsClampable] = useState(false)
   const textRef = useRef(null)
-
-  const content = `Lorem ipsum dolor sit amet, 
-          consectetur adipiscing elit. Sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-          commodo consequat. Duis aute irure dolor in reprehenderit in 
-          voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
 
   useEffect(() => {
     const checkIfClampable = () => {
