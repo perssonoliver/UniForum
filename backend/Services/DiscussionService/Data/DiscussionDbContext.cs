@@ -8,6 +8,7 @@ namespace DiscussionService.Data
         public DiscussionDbContext(DbContextOptions<DiscussionDbContext> options) : base(options) { }
 
         public DbSet<Discussion> Discussions { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +41,27 @@ namespace DiscussionService.Data
                     .HasDefaultValue(0);
 
                 entity.Property(r => r.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
+            });
+
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.HasKey(c => c.Id);
+
+                entity.Property(c => c.DiscussionId)
+                    .IsRequired();
+
+                entity.Property(c => c.UserId)
+                    .IsRequired();
+
+                entity.Property(c => c.Content)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(c => c.LikesCount)
+                    .HasDefaultValue(0);
+
+                entity.Property(c => c.CreatedAt)
                     .HasDefaultValueSql("GETUTCDATE()");
             });
 
