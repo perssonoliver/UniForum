@@ -50,7 +50,7 @@ function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
                 <CourseReview 
                   key={review.Id || index}
                   rating={review.Rating} 
-                  author={review.IsAnonymous ? "Anonymous" : (formatReviewUserName(usersData[review.UserId]) || "Unknown User")}
+                  author={formatReviewUserName(usersData[review.UserId]) || "Unknown User"}
                   date={review.CreatedAt.split('T')[0]}
                   title={review.Title} 
                   content={review.Content} 

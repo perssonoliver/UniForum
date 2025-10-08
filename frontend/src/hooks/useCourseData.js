@@ -25,7 +25,6 @@ export function useCourseData(courseId) {
         setDiscussionData(discussions)
 
         const reviewUserIds = reviews
-          .filter(review => !review.IsAnonymous)
           .map(review => review.UserId)
           
         const discussionUserIds = discussions
