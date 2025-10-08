@@ -1,25 +1,12 @@
-import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import config from './config'
+import { useCourseData } from './hooks/useCourseData'
+import { formatReviewUserName, formatDiscussionUserName } from './utils/formatters'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
 import './CoursePage.css'
 
-function formatReviewUserName(name) {
-  if (!name) return null // Implement loading of reviews and then remove this line
-  const parts = name.split(' ')
-  return parts[0] + ' ' + parts[1][0] + '.'
-}
-
-function formatDiscussionUserName(name) {
-  if (!name) return null // Implement loading of discussions and then remove this line
-  const parts = name.split(' ')
-  return parts[0][0] + parts[1][0]
-}
-
 function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
-  
   return (
     <div className='course-header-container'>
       <span className='course-header-title'>{courseData?.Name || 'Course Name'}</span>
@@ -50,7 +37,7 @@ function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
   )
 }
 
-function CourseBody( { reviewData, discussionData, usersData, isLoading } ) {
+function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
@@ -97,107 +84,34 @@ function CourseBody( { reviewData, discussionData, usersData, isLoading } ) {
 }
 
 function CoursePage() {
-  const [reviewData, setReviewData] = useState([])
-  const [discussionData, setDiscussionData] = useState([])
-  const [usersData, setUsersData] = useState({})
-  const [averageRating, setAverageRating] = useState(0)
-  const [reviewCount, setReviewCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
   const location = useLocation()
   const courseData = location.state?.courseData
-
-  useEffect(() => {
-    async function fetchData() {
-      if (!courseData?.Id) return;
-      
-      setIsLoading(true)
-      
-      try {
-        const reviewResponse = await fetch(`${config.API_REVIEW_SERVICE_BASE_URL}/api/courses/${courseData.Id}/reviews`)
-
-        if (!reviewResponse.ok) {
-          console.log(`Failed to fetch reviews for course ${courseData.Id}`)
-          throw new Error(`HTTP error! status: ${reviewResponse.status}`)
-        }
-        
-        const reviews = await reviewResponse.json()
-        setReviewData(reviews)
-
-        const discussionResponse = await fetch(`${config.API_DISCUSSION_SERVICE_BASE_URL}/api/courses/${courseData.Id}/discussions`)
-
-        if (!discussionResponse.ok) {
-          console.log(`Failed to fetch discussions for course ${courseData.Id}`)
-          throw new Error(`HTTP error! status: ${discussionResponse.status}`)
-        }
-
-        const discussions = await discussionResponse.json()
-        setDiscussionData(discussions)
-
-        const reviewUserIds = reviews
-          .filter(review => !review.IsAnonymous)
-          .map(review => review.UserId);
-          
-        const discussionUserIds = discussions
-          .map(discussion => discussion.UserId);
-          
-        const userIds = [...new Set([...reviewUserIds, ...discussionUserIds])]
-          .filter(id => id);
-        
-        if (userIds.length > 0) {
-          const userPromises = userIds.map(async (userId) => {
-            try {
-              const userResponse = await fetch(`${config.API_USER_SERVICE_BASE_URL}/api/users/${userId}`)
-              if (userResponse.ok) {
-                return await userResponse.json()
-              } else {
-                console.warn(`Failed to fetch user ${userId}`)
-                return { Id: userId, Name: "Unknown User" }
-              }
-            } catch (error) {
-              console.warn(`Error fetching user ${userId}:`, error)
-              return { Id: userId, Name: "Unknown User" }
-            }
-          })
-          
-          const users = await Promise.all(userPromises)
-          
-          const userLookup = users.reduce((acc, user) => {
-            acc[user.Id] = user.Name
-            return acc
-          }, {})
-          
-          setUsersData(userLookup)
-        }
-        
-        setAverageRating(() => {
-          if (reviews.length === 0) return 0
-          const total = reviews.reduce((sum, review) => sum + review.Rating, 0)
-          return total / reviews.length
-        })
-        setReviewCount(reviews.length)
-        
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    
-    fetchData()
-  }, [courseData?.Id])
+  
+  const {
+    reviewData,
+    discussionData,
+    usersData,
+    averageRating,
+    reviewCount,
+    isLoading
+  } = useCourseData(courseData?.Id)
   
   return (
     <div className='course-container'>
       <CourseHeader 
-        courseData={courseData} averageRating={averageRating} 
-        reviewCount={reviewCount} isLoading={isLoading}
+        courseData={courseData} 
+        averageRating={averageRating} 
+        reviewCount={reviewCount} 
+        isLoading={isLoading}
       />
       <CourseBody 
-        reviewData={reviewData} discussionData={discussionData}
-        usersData={usersData} isLoading={isLoading}
+        reviewData={reviewData} 
+        discussionData={discussionData}
+        usersData={usersData} 
+        isLoading={isLoading}
       />
     </div>
   )
 }
 
-export default CoursePage;
+export default CoursePage

@@ -352,6 +352,22 @@
   padding-inline-start: 0 !important;
   list-style: none;
   border-top: 1px solid #e4e4e4;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+}
+
+.course-discussion-comments-container.show {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.course-discussion-comments-container.hide {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .course-discussion-comment-card {
