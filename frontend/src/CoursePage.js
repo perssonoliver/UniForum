@@ -31,7 +31,6 @@ function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
       <div className='course-header-tags'>
         <div className='course-tag-card'>Programmering</div>
         <div className='course-tag-card'>Java</div>
-        <div className='course-add-tag-card'>+ Add tag</div>
       </div>
     </div>
   )
@@ -41,7 +40,13 @@ function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
-        <h1>Reviews</h1>
+        <div className='course-body-reviews-header'>
+          <div className='course-body-reviews-header-title'>Reviews</div>
+          <button className='course-add-review-button'>
+            <span className='course-add-review-button-plus'>+</span>
+            <span className='course-add-review-button-text'>Add Review</span>
+          </button>
+        </div>
         <div className='course-reviews-list-container'>
           <ul className='course-reviews-list'>
             {reviewData
@@ -61,7 +66,13 @@ function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
         </div>
       </div>
       <div className='course-body-discussions-container'>
-        <h1>Discussions</h1>
+        <div className='course-body-discussions-header'>
+          <div className='course-body-discussions-header-title'>Discussions</div>
+          <button className='course-add-discussions-button'>
+            <span className='course-add-discussions-button-plus'>+</span>
+            <span className='course-add-discussions-button-text'>Add Discussion</span>
+          </button>
+        </div>
         <div className='course-discussions-list-container'>
           <ul className='course-discussions-list'>
             {discussionData.map((discussion, index) => (

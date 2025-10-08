@@ -17,6 +17,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 5px;
+  padding-bottom: 10px;
   border: 0px solid blue;
 }
 
@@ -62,10 +63,10 @@
 }
 
 .course-tag-card {
-  background-color: #fff7ec;
+  background-color: hsl(36, 100%, 96%);
   padding: 5px 10px;
   border-radius: 10px;
-  border: 1px solid #ff9900;
+  border: 1px solid hsl(36, 100%, 50%);
   font-size: 0.9em;
 }
 
@@ -99,6 +100,63 @@
   flex-direction: column;
   min-height: 0;
   border: 0px solid lime;
+}
+
+.course-body-reviews-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.course-body-reviews-header-title {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  text-justify: center;
+  border: 0px solid red;
+}
+
+.course-add-review-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: hsl(234, 62%, 90%);
+  border: 1px solid hsl(234, 62%, 60%);
+  border-radius: 10px;
+  padding: 4px 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  width: auto;
+  min-width: fit-content;
+}
+
+.course-add-review-button:hover {
+  background-color: hsl(234, 62%, 80%);
+  box-shadow: 4px 4px 10px hsla(234, 62%, 60%, 0.3);
+  padding-right: 20px;
+}
+
+.course-add-review-button-plus {
+  font-size: 2.2em;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.course-add-review-button-text {
+  font-size: 1.2em;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease 0.1s, max-width 0.3s ease, margin-left 0.3s ease;
+  white-space: nowrap;
+}
+
+.course-add-review-button:hover .course-add-review-button-text {
+  opacity: 1;
+  max-width: 200px;
+  margin-left: 10px;
 }
 
 .course-reviews-list-container {
@@ -209,14 +267,67 @@
 /***********************************************************************/
 
 .course-body-discussions-container {
-  border: 1px solid orange;
-}
-
-.course-body-discussions-container {
   display: flex;
   flex-direction: column;
   min-height: 0;
   border: 0px solid lime;
+}
+
+.course-body-discussions-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.course-body-discussions-header-title {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  text-justify: center;
+  border: 0px solid red;
+}
+
+.course-add-discussions-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: hsl(234, 62%, 90%);
+  border: 1px solid hsl(234, 62%, 60%);
+  border-radius: 10px;
+  padding: 4px 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  width: auto;
+  min-width: fit-content;
+}
+
+.course-add-discussions-button:hover {
+  background-color: hsl(234, 62%, 80%);
+  box-shadow: 4px 4px 10px hsla(234, 62%, 60%, 0.3);
+  padding-right: 20px;
+}
+
+.course-add-discussions-button-plus {
+  font-size: 2.2em;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.course-add-discussions-button-text {
+  font-size: 1.2em;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease 0.1s, max-width 0.3s ease, margin-left 0.3s ease;
+  white-space: nowrap;
+}
+
+.course-add-discussions-button:hover .course-add-discussions-button-text {
+  opacity: 1;
+  max-width: 200px;
+  margin-left: 10px;
 }
 
 .course-discussions-list-container {
