@@ -80,6 +80,7 @@ function CourseBody( { reviewData, discussionData, usersData, isLoading } ) {
             {discussionData.map((discussion, index) => (
               <CourseDiscussion
                 key={discussion.Id || index}
+                discussionId={discussion.Id}
                 title={discussion.Title}
                 content={discussion.Content}
                 author={formatDiscussionUserName(usersData[discussion.UserId]) || "JD"}

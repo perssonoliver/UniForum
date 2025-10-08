@@ -342,3 +342,21 @@
   flex-grow: 1;
   text-align: right;
 }
+
+.course-discussion-comments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-inline-start: 0 !important;
+  list-style: none;
+  border-top: 1px solid #e4e4e4;
+}
+
+.course-discussion-comment-card {
+  display: flex;
+  gap: 15px;
+  padding-bottom: 10px;
+  width: 100%;
+}
