@@ -89,7 +89,7 @@ function CourseDiscussion({ discussionId, title, content, author, date, likesCou
               <li key={comment.id} className='course-discussion-comment-card'>
                 <button className='course-discussion-profile'>{comment.UserId}</button>
                 <div className='course-discussion-main'>
-                  <p className='course-discussion-text'>{comment.Content}</p>
+                  <p className='course-discussion-comment-text'>{comment.Content}</p>
                   <div className='course-discussion-footer'>
                     <div className='course-discussion-like-field'>
                       <button className='course-discussion-like-button'>
