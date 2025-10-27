@@ -70,10 +70,10 @@ function SearchPage() {
   }, [])
 
   const handleFocus = useCallback(() => {
-    if (searchQuery.trim() || courses.length > 0) {
+    if (searchQuery.trim() || courses.length > 0 || isLoading) {
       setShowSuggestions(true)
     }
-  }, [searchQuery, courses.length])
+  }, [searchQuery, courses.length, isLoading])
 
   const handleBlur = useCallback(() => {
     setTimeout(() => setShowSuggestions(false), 200)
