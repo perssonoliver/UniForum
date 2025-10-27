@@ -471,6 +471,17 @@
   box-sizing: border-box;
 }
 
+.course-discussion-add-comment-input:hover {
+  background-color: hsl(0, 0%, 96%);
+}
+
+.course-discussion-add-comment-input:focus {
+  outline: none;
+  background-color: hsl(0, 0%, 96%);
+  border-color: hsl(234, 62%, 60%);
+  box-shadow: 0 0 5px hsla(234, 62%, 60%, 0.5);
+}
+
 .course-discussion-add-comment-button {
   padding: 8px 12px;
   border-radius: 8px;
@@ -480,6 +491,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.course-discussion-add-comment-button:hover {
+  background-color: hsl(36, 100%, 90%);
+  box-shadow: 0 0 3px hsla(36, 100%, 50%, 0.3);
 }
 
 /***********************************************************************/
