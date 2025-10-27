@@ -42,10 +42,7 @@ function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
       <div className='course-body-reviews-container'>
         <div className='course-body-reviews-header'>
           <div className='course-body-reviews-header-title'>Reviews</div>
-          <button className='course-add-review-button'>
-            <span className='course-add-review-button-plus'>+</span>
-            <span className='course-add-review-button-text'>Add Review</span>
-          </button>
+          <AddButton />
         </div>
         <div className='course-reviews-list-container'>
           <ul className='course-reviews-list'>
@@ -68,10 +65,7 @@ function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
       <div className='course-body-discussions-container'>
         <div className='course-body-discussions-header'>
           <div className='course-body-discussions-header-title'>Discussions</div>
-          <button className='course-add-discussions-button'>
-            <span className='course-add-discussions-button-plus'>+</span>
-            <span className='course-add-discussions-button-text'>Add Discussion</span>
-          </button>
+          <AddButton />
         </div>
         <div className='course-discussions-list-container'>
           <ul className='course-discussions-list'>
@@ -91,6 +85,15 @@ function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
         </div>
       </div>
     </div>
+  )
+}
+
+function AddButton() {
+  return (
+    <button className='course-add-button'>
+      <span className='course-add-button-plus'>+</span>
+      <span className='course-add-button-text'>Add</span>
+    </button>
   )
 }
 
