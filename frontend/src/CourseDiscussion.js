@@ -91,6 +91,14 @@ function CourseDiscussion({
             ))}
           </ul>
         )}
+        <div className='course-discussion-add-comment'>
+          <input 
+            type='text' 
+            className='course-discussion-add-comment-input' 
+            placeholder='Add a comment...' 
+          />
+          <button className='course-discussion-add-comment-button'>Post</button>
+        </div>
       </div>
     </li>
   )
