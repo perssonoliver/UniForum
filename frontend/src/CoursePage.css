@@ -20,6 +20,7 @@
 
 @media (max-width: 470px) {
   .course-container {
+    height: 100dvh;
     padding: 30px 20px;
     font-size: 1em;
   }
@@ -42,6 +43,7 @@
 
 .course-header-subtitle {
   color: gray;
+  margin-top: 6px;
 }
 
 .course-header-reviews {
