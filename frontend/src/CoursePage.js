@@ -6,7 +6,7 @@ import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
 import './CoursePage.css'
 
-function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
+function CourseHeader({ courseData, tagsData, averageRating, reviewCount, isLoading }) {
   return (
     <div className='course-header-container'>
       <span className='course-header-title'>{courseData?.Name || 'Course Name'}</span>
@@ -29,8 +29,9 @@ function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
         </div>
       </div>
       <div className='course-header-tags'>
-        <div className='course-tag-card'>Programmering</div>
-        <div className='course-tag-card'>Java</div>
+        {tagsData.map(tag => (
+          <div key={tag.Id} className='course-tag-card'>{tag.Name}</div>
+        ))}
       </div>
     </div>
   )
@@ -105,6 +106,7 @@ function CoursePage() {
     reviewData,
     discussionData,
     usersData,
+    tagsData,
     averageRating,
     reviewCount,
     isLoading
@@ -114,6 +116,7 @@ function CoursePage() {
     <div className='course-container'>
       <CourseHeader 
         courseData={courseData} 
+        tagsData={tagsData}
         averageRating={averageRating} 
         reviewCount={reviewCount} 
         isLoading={isLoading}

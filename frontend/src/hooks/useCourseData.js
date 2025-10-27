@@ -5,6 +5,7 @@ export function useCourseData(courseId) {
   const [reviewData, setReviewData] = useState([])
   const [discussionData, setDiscussionData] = useState([])
   const [usersData, setUsersData] = useState({})
+  const [tagsData, setTagsData] = useState([])
   const [averageRating, setAverageRating] = useState(0)
   const [reviewCount, setReviewCount] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
@@ -16,13 +17,15 @@ export function useCourseData(courseId) {
       setIsLoading(true)
       
       try {
-        const [reviews, discussions] = await Promise.all([
+        const [reviews, discussions, tags] = await Promise.all([
           apiService.getCourseReviews(courseId),
-          apiService.getCourseDiscussions(courseId)
+          apiService.getCourseDiscussions(courseId),
+          apiService.getCourseTags(courseId)
         ])
         
         setReviewData(reviews)
         setDiscussionData(discussions)
+        setTagsData(tags)
 
         const reviewUserIds = reviews
           .map(review => review.UserId)
@@ -74,6 +77,7 @@ export function useCourseData(courseId) {
     reviewData,
     discussionData,
     usersData,
+    tagsData,
     averageRating,
     reviewCount,
     isLoading
