@@ -1,10 +1,72 @@
-import { useLocation } from 'react-router-dom'
-import { useCourseData } from './hooks/useCourseData'
+import { useLoaderData } from 'react-router-dom'
 import { formatReviewUserName, formatDiscussionUserName } from './utils/formatters'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
+import apiService from './services/apiService'
+import config from './config'
 import './CoursePage.css'
+
+export async function courseLoader({ params }) {
+  const courseCode = params.courseCode
+  
+  try {
+    const coursesResponse = await fetch(`${config.API_COURSE_SERVICE_BASE_URL}/api/courses`)
+    if (!coursesResponse.ok) throw new Error('Failed to fetch courses')
+    const courses = await coursesResponse.json()
+    
+    const course = courses.find(c => c.Code === courseCode)
+    if (!course) throw new Error(`Course ${courseCode} not found`)
+    
+    const courseId = course.Id
+    
+    const [reviews, discussions, tags] = await Promise.all([
+      apiService.getCourseReviews(courseId),
+      apiService.getCourseDiscussions(courseId),
+      apiService.getCourseTags(courseId)
+    ])
+    
+    const userIds = [
+      ...new Set([
+        ...reviews.map(r => r.UserId),
+        ...discussions.map(d => d.UserId)
+      ])
+    ].filter(id => id)
+    
+    const userPromises = userIds.map(async (userId) => {
+      try {
+        return await apiService.getUser(userId)
+      } catch (error) {
+        console.warn(`Error fetching user ${userId}:`, error)
+        return { Id: userId, Name: "Unknown User" }
+      }
+    })
+    
+    const users = await Promise.all(userPromises)
+    
+    const usersData = users.reduce((acc, user) => {
+      acc[user.Id] = user.Name
+      return acc
+    }, {})
+    
+    const averageRating = reviews.length > 0
+      ? reviews.reduce((sum, r) => sum + r.Rating, 0) / reviews.length
+      : 0
+    
+    return {
+      courseData: course,
+      reviewData: reviews,
+      discussionData: discussions,
+      usersData,
+      tagsData: tags,
+      averageRating,
+      reviewCount: reviews.length
+    }
+  } catch (error) {
+    console.error('Error in courseLoader:', error)
+    throw error
+  }
+}
 
 function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
   return (
@@ -93,35 +155,22 @@ function AddButton() {
 }
 
 function CoursePage() {
-  const location = useLocation()
-  const courseData = location.state?.courseData
-  
-  const {
-    reviewData,
-    discussionData,
-    usersData,
-    tagsData,
-    averageRating,
-    reviewCount,
-    isLoading
-  } = useCourseData(courseData?.Id)
+  const loaderData = useLoaderData()
   
   return (
-    !isLoading && (
-      <div className='course-container'>
-        <CourseHeader 
-          courseData={courseData} 
-          tagsData={tagsData}
-          averageRating={averageRating} 
-          reviewCount={reviewCount} 
-        />
-        <CourseBody 
-          reviewData={reviewData} 
-          discussionData={discussionData}
-          usersData={usersData} 
-        />
-      </div>
-    )
+    <div className='course-container'>
+      <CourseHeader 
+        courseData={loaderData.courseData} 
+        tagsData={loaderData.tagsData}
+        averageRating={loaderData.averageRating} 
+        reviewCount={loaderData.reviewCount} 
+      />
+      <CourseBody 
+        reviewData={loaderData.reviewData} 
+        discussionData={loaderData.discussionData}
+        usersData={loaderData.usersData} 
+      />
+    </div>
   )
 }
 
