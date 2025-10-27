@@ -6,7 +6,7 @@ import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
 import './CoursePage.css'
 
-function CourseHeader({ courseData, tagsData, averageRating, reviewCount, isLoading }) {
+function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
   return (
     <div className='course-header-container'>
       <span className='course-header-title'>{courseData?.Name || 'Course Name'}</span>
@@ -16,16 +16,10 @@ function CourseHeader({ courseData, tagsData, averageRating, reviewCount, isLoad
       <div className='course-header-reviews'>
         <div className='course-header-rating'>
           <StarRating rating={averageRating} />
-          {isLoading ? (
-            <>
-              <span className='course-header-review-count'>Loading reviews...</span>
-            </>
-          ) : (
-            <>
-              <span className='course-header-rating-value'>{averageRating.toFixed(1)}</span>
-              <span className='course-header-review-count'>{reviewCount} reviews</span>
-            </>
-          )}
+          <>
+            <span className='course-header-rating-value'>{averageRating.toFixed(1)}</span>
+            <span className='course-header-review-count'>{reviewCount} reviews</span>
+          </>
         </div>
       </div>
       <div className='course-header-tags'>
@@ -37,7 +31,7 @@ function CourseHeader({ courseData, tagsData, averageRating, reviewCount, isLoad
   )
 }
 
-function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
+function CourseBody({ reviewData, discussionData, usersData }) {
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
@@ -113,21 +107,21 @@ function CoursePage() {
   } = useCourseData(courseData?.Id)
   
   return (
-    <div className='course-container'>
-      <CourseHeader 
-        courseData={courseData} 
-        tagsData={tagsData}
-        averageRating={averageRating} 
-        reviewCount={reviewCount} 
-        isLoading={isLoading}
-      />
-      <CourseBody 
-        reviewData={reviewData} 
-        discussionData={discussionData}
-        usersData={usersData} 
-        isLoading={isLoading}
-      />
-    </div>
+    !isLoading && (
+      <div className='course-container'>
+        <CourseHeader 
+          courseData={courseData} 
+          tagsData={tagsData}
+          averageRating={averageRating} 
+          reviewCount={reviewCount} 
+        />
+        <CourseBody 
+          reviewData={reviewData} 
+          discussionData={discussionData}
+          usersData={usersData} 
+        />
+      </div>
+    )
   )
 }
 
