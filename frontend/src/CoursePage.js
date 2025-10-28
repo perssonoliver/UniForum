@@ -3,10 +3,11 @@ import { formatReviewUserName, formatDiscussionUserName } from './utils/formatte
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
+import SearchForm from './components/SearchForm'
 import apiService from './services/apiService'
 import config from './config'
 import './CoursePage.css'
-import SearchForm from './components/SearchForm'
+import logoIcon from './img/logo.png'
 
 export async function courseLoader({ params }) {
   const courseCode = params.courseCode
@@ -167,7 +168,7 @@ function CoursePage() {
           type='submit'
           onClick={() => navigate('/')}
         >
-          Home
+          <img className='logo-icon' src={logoIcon} alt='Logo' />
         </button>
         <SearchForm miniFormat={true} />
       </div>

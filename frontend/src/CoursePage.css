@@ -20,7 +20,6 @@
 }
 
 .course-page-menu-home-button {
-  height: 100%;
   display: flex;
   align-items: center;
   background-color: transparent;
@@ -28,6 +27,15 @@
   cursor: pointer;
   font-weight: bold;
   font-size: 1.2em;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.logo-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .course-container {
@@ -68,6 +76,8 @@
   
   .course-page-menu-home-button {
     flex-shrink: 0;
+    width: 32px;
+    height: 32px;
   }
   
   .search-form {
