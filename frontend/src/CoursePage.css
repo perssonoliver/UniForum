@@ -1,26 +1,65 @@
 /* Course Page Styles */
 
-.course-container {
+.course-page {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.course-page-menu {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  background-color: hsl(0, 0%, 98%);
+  border-bottom: 1px solid hsl(0, 0%, 89%);
+  padding: 20px 120px;
+  box-sizing: border-box;
+}
+
+.course-page-menu-home-button {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.course-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 5px;
   font-size: 1.1em;
-  padding: 50px 120px;
+  padding: 20px 120px 50px 120px;
   box-sizing: border-box;
   text-align: left;
   background-color: hsl(0, 0%, 94%);
+  overflow: hidden;
+  min-height: 0;
 }
 
 @media (max-width: 750px) {
+  .course-page-menu {
+    padding: 20px 50px;
+  }
   .course-container {
-    padding: 50px 50px;
+    padding: 20px 50px 50px 50px;
   }
 }
 
 @media (max-width: 470px) {
+  .course-page-menu {
+    padding: 20px 20px;
+  }
   .course-container {
     padding: 30px 20px;
+    padding: 20px 20px 30px 20px;
     font-size: 1em;
   }
 }

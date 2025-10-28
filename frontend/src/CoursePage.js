@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import { formatReviewUserName, formatDiscussionUserName } from './utils/formatters'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
@@ -6,6 +6,7 @@ import StarRating from './components/StarRating'
 import apiService from './services/apiService'
 import config from './config'
 import './CoursePage.css'
+import SearchForm from './components/SearchForm'
 
 export async function courseLoader({ params }) {
   const courseCode = params.courseCode
@@ -155,21 +156,34 @@ function AddButton() {
 }
 
 function CoursePage() {
+  const navigate = useNavigate()
   const loaderData = useLoaderData()
   
   return (
-    <div className='course-container'>
-      <CourseHeader 
-        courseData={loaderData.courseData} 
-        tagsData={loaderData.tagsData}
-        averageRating={loaderData.averageRating} 
-        reviewCount={loaderData.reviewCount} 
-      />
-      <CourseBody 
-        reviewData={loaderData.reviewData} 
-        discussionData={loaderData.discussionData}
-        usersData={loaderData.usersData} 
-      />
+    <div className='course-page'>
+      <div className='course-page-menu'>
+        <button 
+          className='course-page-menu-home-button' 
+          type='submit'
+          onClick={() => navigate('/')}
+        >
+          Home
+        </button>
+        <SearchForm miniFormat={true} />
+      </div>
+      <div className='course-container'>
+        <CourseHeader 
+          courseData={loaderData.courseData} 
+          tagsData={loaderData.tagsData}
+          averageRating={loaderData.averageRating} 
+          reviewCount={loaderData.reviewCount} 
+        />
+        <CourseBody 
+          reviewData={loaderData.reviewData} 
+          discussionData={loaderData.discussionData}
+          usersData={loaderData.usersData} 
+        />
+      </div>
     </div>
   )
 }

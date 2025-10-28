@@ -3,7 +3,8 @@ const SuggestionsDropdown = ({
   isLoading, 
   searchQuery, 
   onSelectSuggestion,
-  isVisible 
+  isVisible, 
+  miniFormat
 }) => {
   if (!isVisible) return null
 
@@ -12,7 +13,7 @@ const SuggestionsDropdown = ({
   }
 
   return (
-    <div className='suggestions-container'>
+    <div className={`suggestions-container${miniFormat ? '-mini' : ''}`}>
       {isLoading ? (
         <div className='suggestion-item'>Loading courses...</div>
       ) : suggestions.length > 0 ? (

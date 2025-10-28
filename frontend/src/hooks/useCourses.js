@@ -55,7 +55,6 @@ export const useCourses = () => {
       if (!forceRefresh) {
         const cachedData = cacheManager.get()
         if (cachedData) {
-          console.log('Using cached courses data')
           setCourses(cachedData)
           setIsLoading(false)
           return
