@@ -55,14 +55,12 @@ export const useCourses = () => {
       if (!forceRefresh) {
         const cachedData = cacheManager.get()
         if (cachedData) {
-          console.log('Using cached courses data')
           setCourses(cachedData)
           setIsLoading(false)
           return
         }
       }
 
-      console.log('Fetching courses from API')
       setIsLoading(true)
       setError(null)
       const response = await fetch(`${config.API_COURSE_SERVICE_BASE_URL}/api/courses`)

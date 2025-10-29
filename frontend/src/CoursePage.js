@@ -1,12 +1,76 @@
-import { useLocation } from 'react-router-dom'
-import { useCourseData } from './hooks/useCourseData'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import { formatReviewUserName, formatDiscussionUserName } from './utils/formatters'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
 import StarRating from './components/StarRating'
+import SearchForm from './components/SearchForm'
+import apiService from './services/apiService'
+import config from './config'
 import './CoursePage.css'
+import logoIcon from './img/logo.png'
 
-function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
+export async function courseLoader({ params }) {
+  const courseCode = params.courseCode
+  
+  try {
+    const coursesResponse = await fetch(`${config.API_COURSE_SERVICE_BASE_URL}/api/courses`)
+    if (!coursesResponse.ok) throw new Error('Failed to fetch courses')
+    const courses = await coursesResponse.json()
+    
+    const course = courses.find(c => c.Code === courseCode)
+    if (!course) throw new Error(`Course ${courseCode} not found`)
+    
+    const courseId = course.Id
+    
+    const [reviews, discussions, tags] = await Promise.all([
+      apiService.getCourseReviews(courseId),
+      apiService.getCourseDiscussions(courseId),
+      apiService.getCourseTags(courseId)
+    ])
+    
+    const userIds = [
+      ...new Set([
+        ...reviews.map(r => r.UserId),
+        ...discussions.map(d => d.UserId)
+      ])
+    ].filter(id => id)
+    
+    const userPromises = userIds.map(async (userId) => {
+      try {
+        return await apiService.getUser(userId)
+      } catch (error) {
+        console.warn(`Error fetching user ${userId}:`, error)
+        return { Id: userId, Name: "Unknown User" }
+      }
+    })
+    
+    const users = await Promise.all(userPromises)
+    
+    const usersData = users.reduce((acc, user) => {
+      acc[user.Id] = user.Name
+      return acc
+    }, {})
+    
+    const averageRating = reviews.length > 0
+      ? reviews.reduce((sum, r) => sum + r.Rating, 0) / reviews.length
+      : 0
+    
+    return {
+      courseData: course,
+      reviewData: reviews,
+      discussionData: discussions,
+      usersData,
+      tagsData: tags,
+      averageRating,
+      reviewCount: reviews.length
+    }
+  } catch (error) {
+    console.error('Error in courseLoader:', error)
+    throw error
+  }
+}
+
+function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
   return (
     <div className='course-header-container'>
       <span className='course-header-title'>{courseData?.Name || 'Course Name'}</span>
@@ -16,64 +80,70 @@ function CourseHeader({ courseData, averageRating, reviewCount, isLoading }) {
       <div className='course-header-reviews'>
         <div className='course-header-rating'>
           <StarRating rating={averageRating} />
-          {isLoading ? (
-            <>
-              <span className='course-header-review-count'>Loading reviews...</span>
-            </>
-          ) : (
-            <>
+          <>
+            {averageRating > 0 && 
               <span className='course-header-rating-value'>{averageRating.toFixed(1)}</span>
-              <span className='course-header-review-count'>{reviewCount} reviews</span>
-            </>
-          )}
+            }
+            {averageRating > 0 ? 
+              <span className='course-header-review-count'>
+                {reviewCount === 1 ? `${reviewCount} review` : `${reviewCount} reviews`}
+              </span> : 
+              <span className='course-header-review-count'>No reviews yet</span>
+            }
+          </>
         </div>
       </div>
       <div className='course-header-tags'>
-        <div className='course-tag-card'>Programmering</div>
-        <div className='course-tag-card'>Java</div>
+        {tagsData.map(tag => (
+          <div key={tag.Id} className='course-tag-card'>{tag.Name}</div>
+        ))}
       </div>
     </div>
   )
 }
 
-function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
+function CourseBody({ reviewData, discussionData, usersData }) {
+  const filteredReviews = reviewData.filter(review => review.Title && review.Content);
+
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
         <div className='course-body-reviews-header'>
           <div className='course-body-reviews-header-title'>Reviews</div>
-          <button className='course-add-review-button'>
-            <span className='course-add-review-button-plus'>+</span>
-            <span className='course-add-review-button-text'>Add Review</span>
-          </button>
+          <AddButton />
         </div>
         <div className='course-reviews-list-container'>
+          {filteredReviews.length === 0 && 
+            <h3 className='course-reviews-empty'>
+              No written reviews yet. Be the first to leave a review!
+            </h3>
+          }
           <ul className='course-reviews-list'>
-            {reviewData
-              .filter(review => review.Title && review.Content)
-              .map((review, index) => (
-                <CourseReview 
-                  key={review.Id || index}
-                  rating={review.Rating} 
-                  author={formatReviewUserName(usersData[review.UserId]) || "Unknown User"}
-                  date={review.CreatedAt.split('T')[0]}
-                  title={review.Title} 
-                  content={review.Content} 
-                  likesCount={review.LikesCount || 0}
-                />
-              ))}
+            {filteredReviews.map((review, index) => (
+              <CourseReview 
+                key={review.Id || index}
+                rating={review.Rating} 
+                author={formatReviewUserName(usersData[review.UserId]) || "Unknown User"}
+                date={review.CreatedAt.split('T')[0]}
+                title={review.Title} 
+                content={review.Content} 
+                likesCount={review.LikesCount || 0}
+              />
+            ))}
           </ul>
         </div>
       </div>
       <div className='course-body-discussions-container'>
         <div className='course-body-discussions-header'>
           <div className='course-body-discussions-header-title'>Discussions</div>
-          <button className='course-add-discussions-button'>
-            <span className='course-add-discussions-button-plus'>+</span>
-            <span className='course-add-discussions-button-text'>Add Discussion</span>
-          </button>
+          <AddButton />
         </div>
         <div className='course-discussions-list-container'>
+          {discussionData.length === 0 && 
+            <h3 className='course-reviews-empty'>
+              Have something on your mind? Start a discussion!
+            </h3>
+          }
           <ul className='course-discussions-list'>
             {discussionData.map((discussion, index) => (
               <CourseDiscussion
@@ -94,33 +164,44 @@ function CourseBody({ reviewData, discussionData, usersData, isLoading }) {
   )
 }
 
+function AddButton() {
+  return (
+    <button className='course-add-button'>
+      <span className='course-add-button-plus'>+</span>
+      <span className='course-add-button-text'>Add</span>
+    </button>
+  )
+}
+
 function CoursePage() {
-  const location = useLocation()
-  const courseData = location.state?.courseData
-  
-  const {
-    reviewData,
-    discussionData,
-    usersData,
-    averageRating,
-    reviewCount,
-    isLoading
-  } = useCourseData(courseData?.Id)
+  const navigate = useNavigate()
+  const loaderData = useLoaderData()
   
   return (
-    <div className='course-container'>
-      <CourseHeader 
-        courseData={courseData} 
-        averageRating={averageRating} 
-        reviewCount={reviewCount} 
-        isLoading={isLoading}
-      />
-      <CourseBody 
-        reviewData={reviewData} 
-        discussionData={discussionData}
-        usersData={usersData} 
-        isLoading={isLoading}
-      />
+    <div className='course-page'>
+      <div className='course-page-menu'>
+        <button 
+          className='course-page-menu-home-button' 
+          type='submit'
+          onClick={() => navigate('/')}
+        >
+          <img className='logo-icon' src={logoIcon} alt='Logo' />
+        </button>
+        <SearchForm miniFormat={true} />
+      </div>
+      <div className='course-container'>
+        <CourseHeader 
+          courseData={loaderData.courseData} 
+          tagsData={loaderData.tagsData}
+          averageRating={loaderData.averageRating} 
+          reviewCount={loaderData.reviewCount} 
+        />
+        <CourseBody 
+          reviewData={loaderData.reviewData} 
+          discussionData={loaderData.discussionData}
+          usersData={loaderData.usersData} 
+        />
+      </div>
     </div>
   )
 }

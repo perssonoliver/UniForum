@@ -8,14 +8,27 @@ namespace CourseService.Data
         public CourseDbContext(DbContextOptions<CourseDbContext> options) : base(options) { }
 
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Course>()
-                .Property(c => c.CreatedAt)
-                .HasDefaultValueSql("GETUTCDATE()");
+            modelBuilder.Entity<Course>(entity =>
+            {
+                entity.Property(r => r.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
+            });
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Tag>(entity =>
+            {
+                entity.Property(r => r.Name)
+                    .IsRequired();
+
+                entity.Property(r => r.CourseId)
+                    .IsRequired();
+
+                entity.Property(r => r.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
+            });
         }
     }
 }

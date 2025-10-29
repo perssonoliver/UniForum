@@ -1,3 +1,72 @@
+:root {
+  /* Primary colors */
+  --color-primary: #667eea;
+  --color-primary-light: hsl(234, 62%, 90%);
+  --color-primary-border: hsl(234, 62%, 60%);
+  
+  /* Accent colors */
+  --color-accent: hsl(36, 100%, 50%);
+  --color-accent-light: hsl(36, 100%, 96%);
+  --color-accent-hover: hsl(36, 100%, 90%);
+  
+  /* Background colors - Light mode */
+  --color-bg-primary: hsl(0, 0%, 94%);
+  --color-bg-secondary: hsl(0, 0%, 98%);
+  --color-bg-dark: #282c34;
+  --color-bg-hover: hsl(0, 0%, 96%);
+  
+  /* Border colors - Light mode */
+  --color-border: hsl(0, 0%, 89%);
+  --color-border-light: #e4e4e4;
+  --color-border-medium: hsl(0, 0%, 80%);
+  
+  /* Text colors - Light mode */
+  --color-text-primary: #000000;
+  --color-text-secondary: gray;
+  --color-text-dark: rgb(56, 56, 56);
+  --color-text-white: white;
+  
+  /* Shadow colors */
+  --shadow-sm: 0 0 3px hsla(36, 100%, 50%, 0.3);
+  --shadow-md: 0 0 5px hsla(234, 62%, 60%, 0.5);
+  --shadow-lg: 0 0 6px rgba(0, 0, 0, 0.15);
+  --shadow-button: 4px 4px 10px hsla(36, 100%, 50%, 0.3);
+  --shadow-text: 0 2px 4px #0000001a;
+}
+
+@media (prefers-color-scheme: disabled) {
+  :root {
+    /* Background colors - Dark mode */
+    --color-bg-primary: #1a1a1a;
+    --color-bg-secondary: #2d2d2d;
+    --color-bg-hover: #3a3a3a;
+    
+    /* Border colors - Dark mode */
+    --color-border: #404040;
+    --color-border-light: #4a4a4a;
+    --color-border-medium: #555555;
+    
+    /* Text colors - Dark mode */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #b0b0b0;
+    --color-text-dark: #d0d0d0;
+    
+    /* Adjust shadows for dark mode */
+    --shadow-sm: 0 0 3px hsla(36, 100%, 50%, 0.4);
+    --shadow-md: 0 0 5px hsla(234, 62%, 60%, 0.6);
+    --shadow-lg: 0 0 6px rgba(0, 0, 0, 0.5);
+    --shadow-button: 4px 4px 10px hsla(36, 100%, 50%, 0.4);
+    --shadow-text: 0 2px 4px rgba(0, 0, 0, 0.4);
+    
+    /* Adjust accent colors for better dark mode contrast */
+    --color-accent-light: hsl(36, 100%, 20%);
+    --color-accent-hover: hsl(36, 100%, 25%);
+    
+    /* Adjust primary colors for dark mode */
+    --color-primary-light: hsl(234, 62%, 25%);
+  }
+}
+
 body {
   margin: 0;
   height: 100vh;
@@ -6,6 +75,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 code {
