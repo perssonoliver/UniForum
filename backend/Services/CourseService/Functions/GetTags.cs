@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -26,7 +27,9 @@ namespace CourseService.Functions
                 return badRequestResponse;
             }
 
-            var tags = await _context.Tags.ToListAsync();
+            var tags = await _context.Tags
+                .Where(t => t.CourseId == courseId)
+                .ToListAsync();
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
             await response.WriteAsJsonAsync(tags);
