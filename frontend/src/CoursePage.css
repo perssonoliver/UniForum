@@ -275,10 +275,6 @@
   border-bottom: 1px solid #e4e4e4;
 }
 
-.course-review-card:last-child {
-  border-bottom: none;
-}
-
 .course-review-rating {
   display: flex;
   justify-content: space-between;
