@@ -5,7 +5,7 @@
   justify-content: center;
   padding: 20px;
   box-sizing: border-box;
-  background-color: hsl(0, 0%, 94%);
+  background-color: var(--color-bg-primary);
 }
 
 .search-content {
@@ -27,8 +27,8 @@
 .search-title {
   font-size: 3rem;
   font-weight: 700;
-  color: #667eea;
-  text-shadow: 0 2px 4px #0000001a;
+  color: var(--color-primary);
+  text-shadow: var(--shadow-text);
 }
 
 .search-logo-icon {
