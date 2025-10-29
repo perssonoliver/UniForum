@@ -147,10 +147,10 @@
 }
 
 .course-tag-card {
-  background-color: hsl(36, 100%, 96%);
+  background-color: hsl(234, 62%, 90%);
+  border: 1px solid hsl(234, 62%, 60%);
   padding: 5px 10px;
   border-radius: 10px;
-  border: 1px solid hsl(36, 100%, 50%);
   font-size: 0.9em;
 }
 
@@ -585,8 +585,8 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  background-color: hsl(234, 62%, 90%);
-  border: 1px solid hsl(234, 62%, 60%);
+  background-color: hsl(36, 100%, 96%);
+  border: 1px solid hsl(36, 100%, 50%);
   border-radius: 10px;
   padding: 4px 14px;
   overflow: hidden;
@@ -597,8 +597,8 @@
 }
 
 .course-add-button:hover {
-  background-color: hsl(234, 62%, 80%);
-  box-shadow: 4px 4px 10px hsla(234, 62%, 60%, 0.3);
+  background-color: hsl(36, 100%, 90%);
+  box-shadow: 4px 4px 10px hsla(36, 100%, 50%, 0.3);
   padding-right: 20px;
 }
 
