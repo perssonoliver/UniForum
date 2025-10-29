@@ -81,8 +81,15 @@ function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
         <div className='course-header-rating'>
           <StarRating rating={averageRating} />
           <>
-            <span className='course-header-rating-value'>{averageRating.toFixed(1)}</span>
-            <span className='course-header-review-count'>{reviewCount} reviews</span>
+            {averageRating > 0 && 
+              <span className='course-header-rating-value'>{averageRating.toFixed(1)}</span>
+            }
+            {averageRating > 0 ? 
+              <span className='course-header-review-count'>
+                {reviewCount === 1 ? `${reviewCount} review` : `${reviewCount} reviews`}
+              </span> : 
+              <span className='course-header-review-count'>No reviews yet</span>
+            }
           </>
         </div>
       </div>
@@ -96,6 +103,8 @@ function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
 }
 
 function CourseBody({ reviewData, discussionData, usersData }) {
+  const filteredReviews = reviewData.filter(review => review.Title && review.Content);
+
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
@@ -104,25 +113,23 @@ function CourseBody({ reviewData, discussionData, usersData }) {
           <AddButton />
         </div>
         <div className='course-reviews-list-container'>
-          {reviewData.length === 0 && 
+          {filteredReviews.length === 0 && 
             <h3 className='course-reviews-empty'>
               No written reviews yet. Be the first to leave a review!
             </h3>
           }
           <ul className='course-reviews-list'>
-            {reviewData
-              .filter(review => review.Title && review.Content)
-              .map((review, index) => (
-                <CourseReview 
-                  key={review.Id || index}
-                  rating={review.Rating} 
-                  author={formatReviewUserName(usersData[review.UserId]) || "Unknown User"}
-                  date={review.CreatedAt.split('T')[0]}
-                  title={review.Title} 
-                  content={review.Content} 
-                  likesCount={review.LikesCount || 0}
-                />
-              ))}
+            {filteredReviews.map((review, index) => (
+              <CourseReview 
+                key={review.Id || index}
+                rating={review.Rating} 
+                author={formatReviewUserName(usersData[review.UserId]) || "Unknown User"}
+                date={review.CreatedAt.split('T')[0]}
+                title={review.Title} 
+                content={review.Content} 
+                likesCount={review.LikesCount || 0}
+              />
+            ))}
           </ul>
         </div>
       </div>
