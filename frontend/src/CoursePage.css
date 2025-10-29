@@ -407,10 +407,6 @@
   min-width: 0;
 }
 
-.course-discussion-card:last-child {
-  border-bottom: none;
-}
-
 .course-discussion-profile {
   width: 40px;
   height: 40px;
