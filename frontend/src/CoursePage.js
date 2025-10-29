@@ -104,6 +104,11 @@ function CourseBody({ reviewData, discussionData, usersData }) {
           <AddButton />
         </div>
         <div className='course-reviews-list-container'>
+          {reviewData.length === 0 && 
+            <h3 className='course-reviews-empty'>
+              No written reviews yet. Be the first to leave a review!
+            </h3>
+          }
           <ul className='course-reviews-list'>
             {reviewData
               .filter(review => review.Title && review.Content)
@@ -127,6 +132,11 @@ function CourseBody({ reviewData, discussionData, usersData }) {
           <AddButton />
         </div>
         <div className='course-discussions-list-container'>
+          {discussionData.length === 0 && 
+            <h3 className='course-reviews-empty'>
+              Have something on your mind? Start a discussion!
+            </h3>
+          }
           <ul className='course-discussions-list'>
             {discussionData.map((discussion, index) => (
               <CourseDiscussion

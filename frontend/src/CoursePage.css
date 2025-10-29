@@ -233,6 +233,7 @@
 }
 
 .course-reviews-list-container {
+  display: flex;
   background-color: hsl(0, 0%, 98%);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
@@ -246,6 +247,16 @@
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.course-reviews-empty {
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+  width: 100%;
+  padding: 1em 2em;
+  box-sizing: border-box;
+  color: gray;
 }
 
 .course-reviews-list {
@@ -369,6 +380,7 @@
 }
 
 .course-discussions-list-container {
+  display: flex;
   background-color: hsl(0, 0%, 98%);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   border-radius: 10px;

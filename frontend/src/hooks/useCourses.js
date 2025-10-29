@@ -61,7 +61,6 @@ export const useCourses = () => {
         }
       }
 
-      console.log('Fetching courses from API')
       setIsLoading(true)
       setError(null)
       const response = await fetch(`${config.API_COURSE_SERVICE_BASE_URL}/api/courses`)
