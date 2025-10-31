@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
 import './LoadingBar.css'
 
-function LoadingBar() {
+function LoadingBar({ onLoadingComplete }) {
   const [isCompleting, setIsCompleting] = useState(false)
 
   useEffect(() => {
-    const minDisplayTimer = setTimeout(() => {
-      setIsCompleting(true)
-    }, 300)
+    if (onLoadingComplete) {
+      const minDisplayTimer = setTimeout(() => {
+        setIsCompleting(true)
+      }, 100)
 
-    return () => clearTimeout(minDisplayTimer)
-  }, [])
+      return () => clearTimeout(minDisplayTimer)
+    }
+  }, [onLoadingComplete])
 
   return (
     <div className="loading-bar-container">

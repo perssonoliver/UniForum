@@ -8,14 +8,18 @@ import LoadingBar from './components/LoadingBar'
 function RootLayout() {
   const navigation = useNavigation()
   const [showLoadingBar, setShowLoadingBar] = useState(false)
+  const [loadingComplete, setLoadingComplete] = useState(false)
 
   useEffect(() => {
     if (navigation.state === 'loading') {
       setShowLoadingBar(true)
+      setLoadingComplete(false)
     } else if (navigation.state === 'idle' && showLoadingBar) {
+      setLoadingComplete(true)
       const timer = setTimeout(() => {
         setShowLoadingBar(false)
-      }, 300) 
+        setLoadingComplete(false)
+      }, 300) // 100ms min display + 200ms completion animation
 
       return () => clearTimeout(timer)
     }
@@ -23,7 +27,7 @@ function RootLayout() {
 
   return (
     <>
-      {showLoadingBar && <LoadingBar />}
+      {showLoadingBar && <LoadingBar onLoadingComplete={loadingComplete} />}
       <Outlet />
     </>
   )
