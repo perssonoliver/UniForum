@@ -23,3 +23,7 @@
   overflow: hidden;
   color: #ffd700;
 }
+
+.star-container.editable {
+  cursor: pointer;
+}

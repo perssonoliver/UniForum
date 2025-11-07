@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { formatReviewUserName, formatDiscussionUserName } from './utils/formatters'
 import CourseReview from './CourseReview'
@@ -103,14 +104,33 @@ function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
 }
 
 function CourseBody({ reviewData, discussionData, usersData }) {
-  const filteredReviews = reviewData.filter(review => review.Title && review.Content);
+  function handleAddReview() {
+    setShowReviewPopup(true)
+  }
+
+  function handleAddDiscussion() {
+    setShowDiscussionPopup(true)
+  }
+
+  const handleClosePopup = (e) => {
+    if (e.currentTarget !== e.target) {
+      return
+    }
+
+    setShowReviewPopup(false)
+    setShowDiscussionPopup(false)
+  }
+
+  const [showReviewPopup, setShowReviewPopup] = useState(false)
+  const [showDiscussionPopup, setShowDiscussionPopup] = useState(false)
+  const filteredReviews = reviewData.filter(review => review.Title && review.Content)
 
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
         <div className='course-body-reviews-header'>
           <div className='course-body-reviews-header-title'>Reviews</div>
-          <AddButton />
+          <AddButton handler={handleAddReview} />
         </div>
         <div className='course-reviews-list-container'>
           {filteredReviews.length === 0 && 
@@ -136,7 +156,7 @@ function CourseBody({ reviewData, discussionData, usersData }) {
       <div className='course-body-discussions-container'>
         <div className='course-body-discussions-header'>
           <div className='course-body-discussions-header-title'>Discussions</div>
-          <AddButton />
+          <AddButton handler={handleAddDiscussion} />
         </div>
         <div className='course-discussions-list-container'>
           {discussionData.length === 0 && 
@@ -160,16 +180,58 @@ function CourseBody({ reviewData, discussionData, usersData }) {
           </ul>
         </div>
       </div>
+      {showReviewPopup && <AddReviewPopup onClose={handleClosePopup} />}
+      {showDiscussionPopup && <AddDiscussionPopup onClose={handleClosePopup} />}
     </div>
   )
 }
 
-function AddButton() {
+function AddButton({ handler }) {
   return (
-    <button className='course-add-button'>
+    <button className='course-add-button' onClick={handler}>
       <span className='course-add-button-plus'>+</span>
       <span className='course-add-button-text'>Add</span>
     </button>
+  )
+}
+
+function AddReviewPopup( { onClose } ) {
+  const [rating, setRating] = useState(0)
+
+  return (
+    <div className='add-review-popup-overlay' onClick={onClose}> 
+      <div className='add-review-popup'>
+        <StarRating rating={rating} editable={true} onRatingChange={setRating} />
+        <input className='add-review-popup-title' type='text' placeholder='Title (optional)' required />
+        <textarea className='add-review-popup-content' placeholder='Leave your thoughts here... (optional)' required></textarea>
+        <button 
+          className={`add-review-popup-submit ${rating === 0 ? 'disabled' : ''}`} 
+          type='submit'
+          title={rating === 0 ? 'Please select a rating before submitting' : ''}
+        >
+          Submit Review
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function AddDiscussionPopup({ onClose }) {
+  const [valid, setValid] = useState(false)
+  
+  return (
+    <div className='add-review-popup-overlay' onClick={onClose}> 
+      <div className='add-review-popup'>
+        <input className='add-review-popup-title' type='text' placeholder='Title' required />
+        <textarea className='add-review-popup-content' placeholder='Leave your thoughts here... (optional)' required></textarea>
+        <button 
+          className={`add-review-popup-submit ${!valid ? 'disabled' : ''}`} 
+          type='submit'
+        >
+          Submit Discussion
+        </button>
+      </div>
+    </div>
   )
 }
 

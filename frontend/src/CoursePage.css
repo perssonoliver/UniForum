@@ -645,3 +645,98 @@
     margin-left: 0;
   }
 }
+
+/***********************************************************************/
+
+.add-review-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: default;
+}
+
+.add-review-popup {
+  background-color: var(--color-bg-secondary);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 400px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3em;
+}
+
+.add-review-popup-title {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-border-medium);
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1em;
+  outline: none;
+}
+
+.add-review-popup-title:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.add-review-popup-title:focus {
+  background-color: var(--color-bg-hover);
+}
+
+.add-review-popup-content {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid var(--color-border-medium);
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1em;
+  outline: none;
+  resize: none;
+}
+
+.add-review-popup-content:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.add-review-popup-content:focus {
+  background-color: var(--color-bg-hover);
+}
+
+.add-review-popup-submit {
+  align-self: flex-end;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-primary-border);
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.add-review-popup-submit:hover {
+  background-color: var(--color-primary-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.add-review-popup-submit.disabled {
+  background-color: var(--color-border-light);
+  border-color: var(--color-border-medium);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.add-review-popup-submit[disabled] {
+  pointer-events: none;
+}
