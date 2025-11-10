@@ -2,7 +2,7 @@ import './App.css'
 import { createBrowserRouter, RouterProvider, useNavigation, Outlet } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import SearchPage from './SearchPage'
-import CoursePage, { courseLoader } from './CoursePage'
+import CoursePage, { courseLoader, AddReviewPopup, AddDiscussionPopup } from './CoursePage'
 import LoadingBar from './components/LoadingBar'
 
 function RootLayout() {
@@ -44,7 +44,20 @@ const router = createBrowserRouter([
       {
         path: "/course/:courseCode",
         element: <CoursePage />,
-        loader: courseLoader
+        loader: courseLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) => {
+          return currentParams.courseCode !== nextParams.courseCode
+        },
+        children: [
+          {
+            path: "add-review",
+            element: <AddReviewPopup />
+          },
+          {
+            path: "add-discussion",
+            element: <AddDiscussionPopup />
+          }
+        ]
       }
     ]
   }

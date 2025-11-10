@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { useLoaderData, useNavigate, Outlet } from 'react-router-dom'
 import { formatReviewUserName, formatDiscussionUserName } from './utils/formatters'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
@@ -104,25 +104,16 @@ function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
 }
 
 function CourseBody({ reviewData, discussionData, usersData }) {
+  const navigate = useNavigate()
+
   function handleAddReview() {
-    setShowReviewPopup(true)
+    navigate('add-review', { replace: false })
   }
 
   function handleAddDiscussion() {
-    setShowDiscussionPopup(true)
+    navigate('add-discussion', { replace: false })
   }
 
-  const handleClosePopup = (e) => {
-    if (e.currentTarget !== e.target) {
-      return
-    }
-
-    setShowReviewPopup(false)
-    setShowDiscussionPopup(false)
-  }
-
-  const [showReviewPopup, setShowReviewPopup] = useState(false)
-  const [showDiscussionPopup, setShowDiscussionPopup] = useState(false)
   const filteredReviews = reviewData.filter(review => review.Title && review.Content)
 
   return (
@@ -180,8 +171,6 @@ function CourseBody({ reviewData, discussionData, usersData }) {
           </ul>
         </div>
       </div>
-      {showReviewPopup && <AddReviewPopup onClose={handleClosePopup} />}
-      {showDiscussionPopup && <AddDiscussionPopup onClose={handleClosePopup} />}
     </div>
   )
 }
@@ -195,11 +184,19 @@ function AddButton({ handler }) {
   )
 }
 
-function AddReviewPopup( { onClose } ) {
+export function AddReviewPopup() {
   const [rating, setRating] = useState(0)
+  const navigate = useNavigate()
+
+  const handleClosePopup = (e) => {
+    if (e.currentTarget !== e.target) {
+      return
+    }
+    navigate('..', { replace: true })
+  }
 
   return (
-    <div className='add-review-popup-overlay' onClick={onClose}> 
+    <div className='add-review-popup-overlay' onClick={handleClosePopup}> 
       <div className='add-review-popup'>
         <StarRating rating={rating} editable={true} onRatingChange={setRating} />
         <input className='add-review-popup-title' type='text' placeholder='Title (optional)' required />
@@ -216,11 +213,19 @@ function AddReviewPopup( { onClose } ) {
   )
 }
 
-function AddDiscussionPopup({ onClose }) {
+export function AddDiscussionPopup() {
   const [valid, setValid] = useState(false)
+  const navigate = useNavigate()
+  
+  const handleClosePopup = (e) => {
+    if (e.currentTarget !== e.target) {
+      return
+    }
+    navigate('..', { replace: true })
+  }
   
   return (
-    <div className='add-review-popup-overlay' onClick={onClose}> 
+    <div className='add-review-popup-overlay' onClick={handleClosePopup}> 
       <div className='add-review-popup'>
         <input className='add-review-popup-title' type='text' placeholder='Title' required />
         <textarea className='add-review-popup-content' placeholder='Leave your thoughts here... (optional)' required></textarea>
@@ -264,6 +269,8 @@ function CoursePage() {
           usersData={loaderData.usersData} 
         />
       </div>
+
+      <Outlet />
     </div>
   )
 }
