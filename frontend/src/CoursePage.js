@@ -1,4 +1,5 @@
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useLoaderData, useNavigate, Outlet } from 'react-router-dom'
 import { formatReviewUserName, formatDiscussionUserName } from './utils/formatters'
 import CourseReview from './CourseReview'
 import CourseDiscussion from './CourseDiscussion'
@@ -103,14 +104,24 @@ function CourseHeader({ courseData, tagsData, averageRating, reviewCount }) {
 }
 
 function CourseBody({ reviewData, discussionData, usersData }) {
-  const filteredReviews = reviewData.filter(review => review.Title && review.Content);
+  const navigate = useNavigate()
+
+  function handleAddReview() {
+    navigate('add-review', { replace: false })
+  }
+
+  function handleAddDiscussion() {
+    navigate('add-discussion', { replace: false })
+  }
+
+  const filteredReviews = reviewData.filter(review => review.Title && review.Content)
 
   return (
     <div className='course-body-container'>
       <div className='course-body-reviews-container'>
         <div className='course-body-reviews-header'>
           <div className='course-body-reviews-header-title'>Reviews</div>
-          <AddButton />
+          <AddButton handler={handleAddReview} />
         </div>
         <div className='course-reviews-list-container'>
           {filteredReviews.length === 0 && 
@@ -136,7 +147,7 @@ function CourseBody({ reviewData, discussionData, usersData }) {
       <div className='course-body-discussions-container'>
         <div className='course-body-discussions-header'>
           <div className='course-body-discussions-header-title'>Discussions</div>
-          <AddButton />
+          <AddButton handler={handleAddDiscussion} />
         </div>
         <div className='course-discussions-list-container'>
           {discussionData.length === 0 && 
@@ -164,12 +175,83 @@ function CourseBody({ reviewData, discussionData, usersData }) {
   )
 }
 
-function AddButton() {
+function AddButton({ handler }) {
   return (
-    <button className='course-add-button'>
+    <button className='course-add-button' onClick={handler}>
       <span className='course-add-button-plus'>+</span>
       <span className='course-add-button-text'>Add</span>
     </button>
+  )
+}
+
+export function AddReviewPopup() {
+  const [rating, setRating] = useState(0)
+  const navigate = useNavigate()
+
+  const handleClosePopup = (e) => {
+    if (e.currentTarget !== e.target) {
+      return
+    }
+    navigate('..', { replace: true })
+  }
+
+  return (
+    <div className='add-review-popup-overlay' onClick={handleClosePopup}> 
+      <div className='add-review-popup'>
+        <StarRating rating={rating} editable={true} onRatingChange={setRating} />
+        <input className='add-review-popup-title' type='text' placeholder='Title (optional)' required />
+        <textarea className='add-review-popup-content' placeholder='Leave your thoughts here... (optional)' required></textarea>
+        <button 
+          className={`add-review-popup-submit ${rating === 0 ? 'disabled' : ''}`} 
+          type='submit'
+          title={rating === 0 ? 'Please select a rating before submitting' : ''}
+        >
+          Submit Review
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export function AddDiscussionPopup() {
+  const [valid, setValid] = useState(false)
+  const navigate = useNavigate()
+  
+  const handleClosePopup = (e) => {
+    if (e.currentTarget !== e.target) {
+      return
+    }
+    navigate('..', { replace: true })
+  }
+
+  const handleInputChange = (e) => {
+    const { value } = e.target
+    setValid(value.trim().length > 0)
+  }
+
+  return (
+    <div className='add-review-popup-overlay' onClick={handleClosePopup}> 
+      <div className='add-review-popup'>
+        <input 
+          className='add-review-popup-title' 
+          type='text' 
+          placeholder='Title' 
+          required 
+          onChange={handleInputChange}>
+        </input>
+        <textarea 
+          className='add-review-popup-content' 
+          placeholder='Leave your thoughts here... (optional)' 
+          required>
+        </textarea>
+        <button 
+          className={`add-review-popup-submit ${!valid ? 'disabled' : ''}`} 
+          type='submit'
+        >
+          Submit Discussion
+        </button>
+      </div>
+    </div>
   )
 }
 
@@ -202,6 +284,8 @@ function CoursePage() {
           usersData={loaderData.usersData} 
         />
       </div>
+
+      <Outlet />
     </div>
   )
 }

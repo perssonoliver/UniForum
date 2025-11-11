@@ -1,7 +1,8 @@
 :root {
   /* Primary colors */
-  --color-primary: #667eea;
+  --color-primary: hsl(234, 62%, 66%);
   --color-primary-light: hsl(234, 62%, 90%);
+  --color-primary-hover: hsl(234, 62%, 86%);
   --color-primary-border: hsl(234, 62%, 60%);
   
   /* Accent colors */
