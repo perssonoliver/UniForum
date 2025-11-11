@@ -199,8 +199,8 @@ export function AddReviewPopup() {
     <div className='add-review-popup-overlay' onClick={handleClosePopup}> 
       <div className='add-review-popup'>
         <StarRating rating={rating} editable={true} onRatingChange={setRating} />
-        <input className='add-review-popup-title' type='text' placeholder='Title (optional)' required />
-        <textarea className='add-review-popup-content' placeholder='Leave your thoughts here... (optional)' required></textarea>
+        <input className='add-review-popup-title' type='text' placeholder='Title (optional)' />
+        <textarea className='add-review-popup-content' placeholder='Leave your thoughts here... (optional)'></textarea>
         <button 
           className={`add-review-popup-submit ${rating === 0 ? 'disabled' : ''}`} 
           type='submit'
@@ -241,8 +241,7 @@ export function AddDiscussionPopup() {
         </input>
         <textarea 
           className='add-review-popup-content' 
-          placeholder='Leave your thoughts here... (optional)' 
-          required>
+          placeholder='Leave your thoughts here... (optional)'>
         </textarea>
         <button 
           className={`add-review-popup-submit ${!valid ? 'disabled' : ''}`} 
