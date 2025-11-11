@@ -10,6 +10,10 @@
   font-size: 1.6em;
   margin-right: 2px;
   line-height: 1;
+
+  user-select: none; /* Standard syntax */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
 }
 
 .star-background {
@@ -22,6 +26,10 @@
   left: 0;
   overflow: hidden;
   color: #ffd700;
+
+  user-select: none; /* Standard syntax */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
 }
 
 .star-container.editable {

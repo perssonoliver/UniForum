@@ -223,12 +223,27 @@ export function AddDiscussionPopup() {
     }
     navigate('..', { replace: true })
   }
-  
+
+  const handleInputChange = (e) => {
+    const { value } = e.target
+    setValid(value.trim().length > 0)
+  }
+
   return (
     <div className='add-review-popup-overlay' onClick={handleClosePopup}> 
       <div className='add-review-popup'>
-        <input className='add-review-popup-title' type='text' placeholder='Title' required />
-        <textarea className='add-review-popup-content' placeholder='Leave your thoughts here... (optional)' required></textarea>
+        <input 
+          className='add-review-popup-title' 
+          type='text' 
+          placeholder='Title' 
+          required 
+          onChange={handleInputChange}>
+        </input>
+        <textarea 
+          className='add-review-popup-content' 
+          placeholder='Leave your thoughts here... (optional)' 
+          required>
+        </textarea>
         <button 
           className={`add-review-popup-submit ${!valid ? 'disabled' : ''}`} 
           type='submit'
